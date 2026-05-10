@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RoomFinder Buddy 3.0 - M25-ön Túli Báziskereső</title>
+  <title>RoomFinder Buddy 3.1 - M25-ön Túli Báziskereső</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -206,8 +206,7 @@
             <i data-lucide="home" class="text-sky-400 w-6 h-6"></i>
           </div>
           <div class="min-w-0">
-            <h1 class="font-bold text-lg tracking-tight text-white leading-tight truncate">RoomFinder Buddy <span class="text-sky-400">3.0</span></h1>
-            <p class="text-[10px] text-slate-400 uppercase tracking-wider">Nyugalom. Rendszer. Otthon.</p>
+            <h1 class="font-bold text-lg tracking-tight text-white leading-tight truncate">RoomFinder Buddy <span class="text-sky-400">3.1</span></h1>
           </div>
         </div>
         <div class="text-right shrink-0">
@@ -219,38 +218,38 @@
 
     <main class="max-w-md mx-auto p-4 mobile-tight mt-2 mb-24 space-y-5">
       <div x-show="activeTab === 'dashboard'" x-cloak class="space-y-5" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 border border-sky-900/50 p-5 rounded-2xl shadow-lg relative overflow-hidden">
+       <div class="bg-gradient-to-br from-slate-900 to-slate-800 border border-sky-900/50 p-5 rounded-2xl shadow-lg relative overflow-hidden">
           <div class="absolute -top-4 -right-4 w-24 h-24 bg-sky-500/10 rounded-full blur-xl"></div>
           <div class="flex items-center justify-between mb-2 relative z-10">
-            <h3 class="text-slate-300 font-medium text-sm">Idő a költözésig (Márc 31.)</h3>
+            <h3 class="text-slate-300 font-medium text-sm">Idő a költözésig (Máj 30.)</h3>
             <i data-lucide="calendar-heart" class="text-sky-400 w-5 h-5"></i>
           </div>
           <p class="text-2xl font-bold text-sky-400 tracking-wide relative z-10 mb-2" x-text="timeLeft"></p>
           <p class="text-xs text-slate-400 leading-relaxed border-t border-slate-700 pt-2 relative z-10">
-            3.0: már nem csak tárol és shortlistel, hanem állapotot kezel, súlyoz, exportál/importál és viewing közben is használható.
+            3.1: Solo Applicant profil, Agency-Friendly stratégia és szigorú jogi védelem (Fees & Bidding ban).
           </p>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div class="buddy-card rounded-2xl p-4 border-t-2 border-t-green-500">
             <i data-lucide="coins" class="text-green-500 mb-2 w-6 h-6"></i>
-            <h3 class="font-bold text-slate-200 text-xs mb-1">Max £150/hét</h3>
-            <p class="text-[10px] text-slate-400">Bills included kötelező.</p>
+            <h3 class="font-bold text-slate-200 text-xs mb-1">Max £165/hét</h3>
+            <p class="text-[10px] text-slate-400">Bills included (HMO focus).</p>
           </div>
           <div class="buddy-card rounded-2xl p-4 border-t-2 border-t-rose-400">
-            <i data-lucide="users" class="text-rose-400 mb-2 w-6 h-6"></i>
-            <h3 class="font-bold text-slate-200 text-xs mb-1">Páros Bérlés</h3>
-            <p class="text-[10px] text-slate-400">Nincs “No couples” mese.</p>
+            <i data-lucide="user" class="text-rose-400 mb-2 w-6 h-6"></i>
+            <h3 class="font-bold text-slate-200 text-xs mb-1">Solo Applicant</h3>
+            <p class="text-[10px] text-slate-400">Agency-friendly, 3 hó előre.</p>
           </div>
           <div class="buddy-card rounded-2xl p-4 border-t-2 border-t-amber-500">
             <i data-lucide="shield-check" class="text-amber-500 mb-2 w-6 h-6"></i>
-            <h3 class="font-bold text-slate-200 text-xs mb-1">Scam-mentes</h3>
-            <p class="text-[10px] text-slate-400">Nincs előreutalás, nincs linkes cirkusz.</p>
+            <h3 class="font-bold text-slate-200 text-xs mb-1">Jogi Védelem</h3>
+            <p class="text-[10px] text-slate-400">Nincs admin fee, nincs licit.</p>
           </div>
           <div class="buddy-card rounded-2xl p-4 border-t-2 border-t-sky-500">
             <i data-lucide="car" class="text-sky-500 mb-2 w-6 h-6"></i>
-            <h3 class="font-bold text-slate-200 text-xs mb-1">Autós & Bolt</h3>
-            <p class="text-[10px] text-slate-400">Parkoló + normális környék.</p>
+            <h3 class="font-bold text-slate-200 text-xs mb-1">Uber Geofence</h3>
+            <p class="text-[10px] text-slate-400">Nyugat/Délnyugat külső sáv.</p>
           </div>
         </div>
 
@@ -281,13 +280,13 @@
               <i data-lucide="bot" class="mr-2 text-sky-400 w-4 h-4 shrink-0"></i>
               <span class="truncate">AI Hirdetés Elemző</span>
             </h2>
-            <span class="badge badge-purple">3.0</span>
+            <span class="badge badge-purple">3.1</span>
           </div>
           <div class="p-4 space-y-3">
-            <input id="listingTitleInput" class="panel-input !py-3" placeholder="Hirdetés cím / város / rövid név (pl. Slough - Couples room)" />
+            <input id="listingTitleInput" class="panel-input !py-3" placeholder="Hirdetés cím / város / rövid név (pl. Woking - Double room)" />
             <input id="listingMapInput" class="panel-input !py-3" placeholder="Google Maps / map link (nem kötelező)" />
             <input id="listingLandlordInput" class="panel-input !py-3" placeholder="Landlord / agent neve vagy száma (nem kötelező)" />
-            <textarea id="listingInput" rows="5" class="panel-input" placeholder="Illeszd be ide a SpareRoom/OpenRent hirdetés szövegét. A Buddy kiszúrja a scam jeleket, páros kizárást, és pontozza a használhatóságot..."></textarea>
+            <textarea id="listingInput" rows="5" class="panel-input" placeholder="Illeszd be ide a SpareRoom/Rightmove hirdetést. A Buddy kiszúrja az illegális díjakat, licitet, és pontozza az Agency-fit megfelelőséget..."></textarea>
             <div class="grid grid-cols-2 gap-2">
               <button id="analyzeListingBtn" @click="analyzeListing()" :disabled="isAnalyzing" :class="isAnalyzing ? 'opacity-50 cursor-not-allowed' : ''" class="soft-btn w-full bg-slate-800 hover:bg-sky-700 text-sky-400 hover:text-white border border-sky-900 hover:border-sky-500 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
                 <i data-lucide="scan-line" class="w-4 h-4"></i> Elemzés ✨
@@ -1085,7 +1084,7 @@ Formátum:
         },
 
         updateTimer() {
-          const target = new Date('2026-03-31T00:00:00').getTime();
+          const target = new Date('2026-05-30T00:00:00').getTime();
           const now = new Date().getTime();
           const diff = target - now;
           if (diff < 0) {
