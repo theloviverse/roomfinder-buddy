@@ -272,8 +272,6 @@
           </div>
         </div>
 
-        
-
         <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-lg">
           <div class="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center gap-3">
             <h2 class="text-sm font-bold text-white flex items-center min-w-0">
@@ -368,8 +366,8 @@
                     <p class="font-bold text-white" x-text="item.fitScore + '/10'"></p>
                   </div>
                   <div class="bg-slate-950 border border-slate-800 rounded-xl p-2">
-                    <p class="text-slate-500 uppercase">Páros</p>
-                    <p class="font-bold" :class="item.couplesOk ? 'text-green-400' : 'text-rose-400'" x-text="item.couplesOk ? 'Igen' : 'Kérdéses'"></p>
+                    <p class="text-slate-500 uppercase">Solo-fit</p>
+                    <p class="font-bold" :class="item.couplesOk ? 'text-green-400' : 'text-rose-400'" x-text="item.couplesOk ? 'Nincs kizáró' : 'Kizáró van'"></p>
                   </div>
                   <div class="bg-slate-950 border border-slate-800 rounded-xl p-2">
                     <p class="text-slate-500 uppercase">Follow-up</p>
@@ -413,10 +411,11 @@
             </h2>
             <select id="regionFilter" class="bg-slate-950 border border-slate-700 text-slate-300 text-xs rounded-lg focus:ring-sky-500 focus:border-sky-500 p-1.5 outline-none">
               <option value="All">Minden Régió</option>
-              <option value="West">Nyugat (M4/M40)</option>
-              <option value="North">Észak (M1/A1)</option>
-              <option value="East">Kelet (M11/A12)</option>
-              <option value="South">Dél (M3/M23)</option>
+              <option value="South-West">Délnyugat (GU)</option>
+              <option value="West">Nyugat (RG, SL)</option>
+              <option value="North-West">Északnyugat (HP)</option>
+              <option value="North">Észak (WD)</option>
+              <option value="Airports">Repterek (TW, RH, LU)</option>
             </select>
           </div>
 
@@ -532,10 +531,10 @@
             <h2 class="text-sm font-bold text-white flex items-center">
               <i data-lucide="bot-message-square" class="mr-2 text-purple-400 w-4 h-4"></i> AI Válasz Generátor ✨
             </h2>
-            <p class="text-[10px] text-slate-400 mt-1">Másoljátok be a landlord üzenetét. A Buddy ír rá kulturált, de nem balek választ.</p>
+            <p class="text-[10px] text-slate-400 mt-1">Másold be a landlord/ügynök üzenetét. A Buddy ír rá kulturált, jogi szempontból is védett solo-applicant választ.</p>
           </div>
           <div class="p-4">
-            <textarea id="replyGeneratorInput" rows="3" class="panel-input mb-3" placeholder="A főbérlő üzenete (pl. 'Hi, the room is available for couples, but deposit is 2 months rent in cash.')..."></textarea>
+            <textarea id="replyGeneratorInput" rows="3" class="panel-input mb-3" placeholder="A főbérlő/ügynök üzenete (pl. 'Hi, there is a £200 admin fee required. We need employer references...')..."></textarea>
             <button id="generateReplyBtn" class="soft-btn w-full bg-purple-950 hover:bg-purple-900 text-purple-400 hover:text-white border border-purple-900 hover:border-purple-500 font-bold py-2 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
               <i data-lucide="sparkles" class="w-4 h-4"></i> Okos Válasz Generálása ✨
             </button>
@@ -630,7 +629,7 @@
 
     async function fetchGeminiWithRetry(prompt, systemInstructionText, retries = 5) {
       if (!apiKey) {
-        return '<p><strong>Demo mód:</strong> Az AI funkciókhoz API-kulcs szükséges. A 3.0-s rendszerfunkciók ettől függetlenül élnek.</p>';
+        return '<p><strong>Demo mód:</strong> Az AI funkciókhoz API-kulcs szükséges. A 3.1-es rendszerfunkciók ettől függetlenül élnek.</p>';
       }
 
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
@@ -662,22 +661,25 @@
     Chart.defaults.font.family = 'Inter';
 
     const rawTownData = [
-      { id: 1, name: 'High Wycombe', region: 'West', rent: 135, comfort: 7.5, grocery: 8, parking: 'Jó (Utcai, ingyenes zónák)', insight: 'Ideális kompromisszum. Az M40-es könnyű kijutást biztosít.' },
-      { id: 2, name: 'Slough', region: 'West', rent: 125, comfort: 5.5, grocery: 9, parking: 'Közepes (Sok permit)', insight: 'Olcsó, de a komfortérzet alacsony. Alapos utcai szűrést igényel.' },
-      { id: 3, name: 'Reading', region: 'West', rent: 155, comfort: 8.5, grocery: 9, parking: 'Nehéz', insight: 'Drágább, de magas komfort.' },
-      { id: 4, name: 'Hemel Hempstead', region: 'North', rent: 140, comfort: 7.0, grocery: 7, parking: 'Kiváló', insight: 'Jó autós infrastruktúra. Figyelj a lakótársakra (contractor túlsúly).' },
-      { id: 5, name: 'Stevenage', region: 'North', rent: 130, comfort: 6.5, grocery: 8, parking: 'Jó', insight: 'Költséghatékony északi opció.' },
-      { id: 6, name: 'Harlow', region: 'East', rent: 120, comfort: 5.0, grocery: 7, parking: 'Kiváló', insight: 'Nagyon olcsó, de penész/szigetelés ellenőrzése kritikus!' },
-      { id: 7, name: 'Dartford', region: 'East', rent: 135, comfort: 6.5, grocery: 8, parking: 'Közepes', insight: 'Forgalmi csomópont. Zajos lehet.' },
-      { id: 8, name: 'Woking', region: 'South', rent: 165, comfort: 8.5, grocery: 8, parking: 'Közepes', insight: 'Drágább, de tiszta és biztonságos.' },
-      { id: 9, name: 'Crawley', region: 'South', rent: 145, comfort: 7.0, grocery: 7, parking: 'Jó', insight: 'Gatwick közelsége. Jó esély rolling szerződésre.' }
+      { id: 1, name: 'Guildford (GU1, GU2, GU4)', region: 'South-West', rent: 165, comfort: 8.5, grocery: 8, parking: 'Közepes (Permit gyakori)', insight: 'Magas presztízs, jó agency kínálat. A £165/hét határán mozog, keményen kell tárgyalni.' },
+      { id: 2, name: 'Woking (GU21, GU22)', region: 'South-West', rent: 155, comfort: 8.0, grocery: 9, parking: 'Jó (Külvárosban)', insight: 'Uber bázisnak tökéletes. Gyors bejutás Londonba, letisztult, profi környezet.' },
+      { id: 3, name: 'Bracknell (RG12)', region: 'West', rent: 145, comfort: 7.5, grocery: 8, parking: 'Kiváló (Ingyenes utcai)', insight: 'Tech hub, jó parkolás, modern épített környezet. HMO-k nagyon gyakoriak.' },
+      { id: 4, name: 'Wokingham (RG40, RG41)', region: 'West', rent: 150, comfort: 8.5, grocery: 7, parking: 'Jó', insight: 'Csendes, biztonságos, elit környék. Rightmove alert azonnali cselekvéshez kötelező.' },
+      { id: 5, name: 'Slough (SL1, SL2, SL3)', region: 'West', rent: 135, comfort: 5.5, grocery: 9, parking: 'Közepes', insight: 'Olcsó, logisztikai csomópont. Alapos szűrés kell az ügynökségeknél (hidden fees veszély).' },
+      { id: 6, name: 'Marlow/Henley (SL7, RG9)', region: 'North-West', rent: 165, comfort: 9.0, grocery: 7, parking: 'Nehéz (Belváros)', insight: 'Prémium lokáció, gyönyörű környezet. Csak szerencsével és villámgyors reachout-tal fér be a £700 PCM alá.' },
+      { id: 7, name: 'High Wycombe (HP11-15)', region: 'North-West', rent: 140, comfort: 7.0, grocery: 8, parking: 'Jó', insight: 'Kiváló M40 hozzáférés. Ideális kompromisszumos bázis, robusztus bérlemény-kínálat.' },
+      { id: 8, name: 'Watford (WD17, WD18)', region: 'North', rent: 160, comfort: 7.5, grocery: 9, parking: 'Közepes (Zónás)', insight: 'London-közeli, ügynökség-nehéz terület. Érdemes a peremkerületeket nézni a parkolás miatt.' },
+      { id: 9, name: 'Borehamwood (WD6)', region: 'North', rent: 165, comfort: 7.0, grocery: 8, parking: 'Közepes', insight: 'M25 észak. Szigorú agency reference checkek (Right to Rent kritikus).' },
+      { id: 10, name: 'Heathrow (TW6)', region: 'Airports', rent: 145, comfort: 6.0, grocery: 7, parking: 'Jó', insight: 'Légiközlekedés bázis. Sok a shift worker, brutálisan erős Uber pörgés, rugalmas landlordok.' },
+      { id: 11, name: 'Gatwick (RH6)', region: 'Airports', rent: 140, comfort: 6.5, grocery: 7, parking: 'Kiváló', insight: 'Horley és környéke olcsó és autós-barát. Kevesebb a corporate ügynökség.' },
+      { id: 12, name: 'Luton (LU2)', region: 'Airports', rent: 130, comfort: 5.0, grocery: 8, parking: 'Közepes', insight: 'A legolcsóbb opció. Kizárólag zárt parkolós, jól szeparált HMO jöhet szóba a biztonság miatt.' }
     ];
 
     const defaultChecklist = [
-      { id: 'c1', title: 'Párok engedélyezettek?', desc: 'Nincs "no couples" vagy occupancy korlátozás.', done: false },
+      { id: 'c1', title: 'Tenant Fees kiszűrve?', desc: 'Nincs admin fee, referencing fee, vagy egyéb illegális díj (Tenant Fees Act 2019).', done: false },
       { id: 'c2', title: 'Parkolás élőben ellenőrizve?', desc: 'Utcai parkolás tényleg van, nem csak mesélték.', done: false },
       { id: 'c3', title: 'Penész / nedvesség / szag?', desc: 'Sarkok, ablakok, matrac, fürdő ellenőrizve.', done: false },
-      { id: 'c4', title: 'Bills included tiszta?', desc: 'Nem “majd meglátjuk”, hanem egyértelmű.', done: false },
+      { id: 'c4', title: 'Bills included tiszta?', desc: 'Nem "majd meglátjuk", hanem egyértelmű.', done: false },
       { id: 'c5', title: 'Deposit feltételek leírva?', desc: 'Mikor, hogyan, milyen feltétellel jár vissza.', done: false },
       { id: 'c6', title: 'Fotós leltár terv kész?', desc: 'Beköltözéskor minden lefotozva és elküldve.', done: false },
       { id: 'c7', title: 'Notice / minimum stay tiszta?', desc: 'Ne a végén derüljön ki a csapda.', done: false }
@@ -763,7 +765,7 @@
           datasets: [{
             label: 'Átlagbérlet',
             data: avgRents,
-            backgroundColor: ['#0ea5e9', '#10b981', '#f59e0b', '#a855f7'],
+            backgroundColor: ['#0ea5e9', '#10b981', '#f59e0b', '#a855f7', '#fb7185'],
             borderRadius: 10
           }]
         },
@@ -854,20 +856,26 @@
         /send passport/i,
         /booking fee/i
       ];
-      const exclusionFlags = [/no couples/i, /females only/i, /female only/i, /monday to friday/i, /mon-fri/i, /single occupancy/i];
+      const exclusionFlags = [/females only/i, /female only/i, /monday to friday/i, /mon-fri/i];
       const parkingFlags = [/parking/i, /street parking/i, /free parking/i];
       const billsFlags = [/bills included/i, /all bills included/i];
+      const tenantFeeFlags = [/admin fee/i, /administration fee/i, /referencing fee/i, /reference fee/i, /agency fee/i, /application fee/i, /credit check fee/i];
+      const biddingFlags = [/best offer/i, /best and final/i, /sealed bid/i, /rental bid/i, /bid above/i];
 
       const foundScam = scamFlags.filter(re => re.test(lower)).length;
       const foundExclusion = exclusionFlags.filter(re => re.test(lower)).length;
       const foundParking = parkingFlags.filter(re => re.test(lower)).length;
       const foundBills = billsFlags.filter(re => re.test(lower)).length;
+      const foundTenantFee = tenantFeeFlags.filter(re => re.test(lower)).length;
+      const foundBidding = biddingFlags.filter(re => re.test(lower)).length;
       const mould = /mould|mold|damp/i.test(lower) ? 1 : 0;
-      const shortTermGood = /short term|flexible|rolling/i.test(lower) ? 1 : 0;
+      const shortTermGood = /short term|flexible|rolling|periodic/i.test(lower) ? 1 : 0;
 
       let scamScore = 8;
       scamScore += foundScam * (18 * weights.scam);
       scamScore += foundExclusion * (12 * weights.couples);
+      scamScore += foundTenantFee * (15 * weights.scam);
+      scamScore += foundBidding * (12 * weights.scam);
       scamScore += mould * (12 * weights.scam);
       if (/deposit/i.test(lower) && /cash/i.test(lower)) scamScore += 10 * weights.scam;
       if (foundParking === 0) scamScore += 6 * weights.parking;
@@ -879,9 +887,11 @@
       fitScore += shortTermGood;
       fitScore -= foundScam;
       fitScore -= foundExclusion * (1.5 * weights.couples);
+      fitScore -= foundTenantFee * 2;
+      fitScore -= foundBidding * 1.5;
       fitScore -= mould;
 
-      const couplesOk = foundExclusion === 0;
+      const couplesOk = foundExclusion === 0 && foundTenantFee === 0 && foundBidding === 0;
       scamScore = Math.max(0, Math.min(100, Math.round(scamScore)));
       fitScore = Math.max(1, Math.min(10, Math.round(fitScore)));
 
@@ -894,6 +904,8 @@
           foundExclusion,
           foundParking,
           foundBills,
+          foundTenantFee,
+          foundBidding,
           mould,
           shortTermGood
         }
@@ -941,7 +953,7 @@
           document.getElementById('sitrepLoadingContainer').classList.add('flex');
           document.getElementById('sitrepResult').classList.add('hidden');
 
-          const sys = 'Te vagy a RoomFinder Buddy. Célod Krisztián és Enikő megvédése a rossz döntésektől. Kíméletlenül, de támogatóan, érzelemmentesen értékeld a kompromisszumokat a szabályok alapján (1-2 hét minimum stay, autós parkolás kell, max 150 GBP, nincs penész, PÁROK megengedettek, kaució védelme fotókkal). Magyarul, lényegretörő stílusban válaszolj, HTML formátumban (<p>, <strong>, <ul>). Markdown nélkül.';
+          const sys = 'Te vagy a RoomFinder Buddy. Célod Krisztián megvédése a rossz döntésektől. Solo applicant, Company Director, 8 éves UK rezidencia, Settled Status, 3-6 hó Upfront Payment. Kíméletlenül, de támogatóan, érzelemmentesen értékeld a kompromisszumokat a szabályok alapján: max £700 PCM (HMO: bills included kötelező), autós parkolás kötelező, nincs penész, kaució védelme fotókkal, TILOS illegális Tenant Fee / admin díj, TILOS licit az áron felül, Rolling/Periodic tenancy preferált. Magyarul, lényegretörő stílusban válaszolj, HTML formátumban (<p>, <strong>, <ul>). Markdown nélkül.';
           const prmpt = `Dilemma a terepről: "${inputTxt}". Javaslat és döntés?`;
 
           const res = await fetchGeminiWithRetry(prmpt, sys);
@@ -966,10 +978,10 @@
           document.getElementById('replyLoadingContainer').classList.add('flex');
           document.getElementById('replyResult').classList.add('hidden');
 
-          const sys = 'Ingatlan-tárgyalási asszisztens vagy. Egy párt (Krisztián és Enikő) képviselsz. Cél: M25-ön kívüli szoba, PÁROKNAK, autós parkolással, max 150 GBP (bills included), rövid távra. Használj egyszerű HTML formázást (p, strong, div, de ne markdown backtickeket).';
+          const sys = 'Ingatlan-tárgyalási asszisztens vagy. Krisztiánt képviselsz – solo applicant, Company Director, 8 éves UK rezidencia, Settled Status, Right to Rent Share Code azonnal elérhető. Cél: M25 nyugati/délnyugati külső sávja, autós parkolással, max £700 PCM (HMO: bills included), Rolling/Periodic tenancy, 3 hó Upfront Payment a referencia kiváltására. Ellenőrizd az illegális Tenant Fee-t és a licitálási tilalmat. Használj egyszerű HTML formázást (p, strong, div, de ne markdown backtickeket).';
           const prmpt = `A főbérlő/ügynök ezt írta: "${inputTxt}".
 
-Feladat: Írj egy udvarias, de határozott, profi angol nyelvű válaszüzenetet többes számban (we), amely a mi kritériumainkat próbálja átvinni, rákérdez a kaució és parkolás részleteire, vagy viewingot kér.
+Feladat: Írj egy udvarias, de határozott, profi angol nyelvű válaszüzenetet egyes számban (I), amely bemutatja a solo applicant profilt (Company Director, Settled Status, 3 hó Upfront Payment), rákérdez a kaució és parkolás részleteire, és jelzi ha illegális díjat észlelsz. Viewingot kérj ha minden rendben.
 Formátum:
 <p><strong>Miért ezt írtam (Taktika):</strong> [Ide írd le magyarul a stratégiát]</p>
 <div class="mono-box">[Angol válaszlevél pontos szövege]</div>`;
@@ -1001,15 +1013,15 @@ Formátum:
         weights: { scam: 1.0, couples: 1.0, parking: 1.0, bills: 1.0 },
         viewingChecklist: JSON.parse(JSON.stringify(defaultChecklist)),
         phases: [
-          { color: 'bg-sky-400', title: '1. Digitális Szűrés (0-6h)', content: '<ul><li><b>Fókusz:</b> SpareRoom (csak Verified User), OpenRent.</li><li><b>Szűrő:</b> Maps-en csekkold a bolt távolságot (max 10p gyalog).</li><li><b>Kizáró:</b> “No couples”, “Females only”, “Mon-Fri only”.</li><li><b>Akció:</b> 20-30 sablon üzenet kiküldése azonnal.</li></ul>' },
-          { color: 'bg-amber-400', title: '2. Tervezés & Ellenőrzés (6-24h)', content: '<ul><li>Kérdezz rá a kulcspontokra (Notice, Bills, Deposit).</li><li><b>Autós Szűrő:</b> Ingyenes utcai parkolás ellenőrzése.</li><li><b>Jogosultság:</b> Készítsd elő a “Right to Rent Share Code”-ot vagy útlevelet a viewing-ra. Ez konkrét előny.</li></ul>' },
+          { color: 'bg-sky-400', title: '1. Digitális Szűrés (0-6h)', content: '<ul><li><b>Fókusz:</b> SpareRoom, OpenRent, Rightmove, Zoopla (ügynökségi hirdetések is OK).</li><li><b>Szűrő:</b> Maps-en csekkold a bolt távolságot (max 10p gyalog).</li><li><b>Kizáró Red Flag:</b> Illegális admin/referencing fee, "Females only", "Mon-Fri only", licit az áron felül.</li><li><b>Akció:</b> 20-30 Auto-Reachout sablon kiküldése azonnal (Upfront Payment és Settled Status kiemelve).</li></ul>' },
+          { color: 'bg-amber-400', title: '2. Tervezés & Ellenőrzés (6-24h)', content: '<ul><li>Kérdezz rá a kulcspontokra (Notice, Bills, Deposit).</li><li><b>Autós Szűrő:</b> Ingyenes utcai parkolás ellenőrzése.</li><li><b>Jogosultság:</b> Készítsd elő a "Right to Rent Share Code"-ot vagy útlevelet a viewing-ra. Ez konkrét előny.</li></ul>' },
           { color: 'bg-rose-400', title: '3. Helyszíni Szemle (24-36h)', content: '<p class="text-rose-400 mb-1"><b>🚩 RED FLAGS:</b> Nincs parkoló, előreutalás, WhatsApp-os Airbnb link.</p><ul><li>Teszteld a parkolást érkezéskor.</li><li>Matrac, szag, penész, falnedvesség ellenőrzése.</li></ul>' },
           { color: 'bg-green-500', title: '4. Biztonságos Zárás (36-48h)', content: '<ul><li><b>KAUCIÓ VÉDELEM:</b> Lodger esetben jellemzően nincs DPS védelem.</li><li><b>Kötelező:</b> Beköltözéskor fotós leltár, elküldve írásban.</li><li>Írásos elismervény a deposit átadásáról és visszafizetési feltételeiről.</li></ul>' }
         ],
         templates: [
-          { id: 't1', title: 'Első Üzenet (Páros/Alap)', content: `Hi, my partner and I are looking for a short-term room from around the end of March.\nWe are working professionals, quiet, tidy and reliable. We only need a practical temporary base rather than a long fixed tenancy, and we have minimal belongings with us.\n\nYour room looks like it could be a good fit.\nCould you please confirm:\n- whether couples are accepted,\n- minimum stay & notice period,\n- whether bills are included,\n- and total upfront cost (rent + deposit)?\n\nWe can view promptly. Thanks.` },
-          { id: 't2', title: 'Első Üzenet (Páros/Autós)', content: `Hi, my partner and I are looking for a flexible short-term room as an interim base before 31 March.\nI drive, so easy street parking is essential for us. We are both employed, respectful, clean, and travel light.\n\nWe are most interested if this is a private landlord arrangement with straightforward terms.\nCould you confirm availability for a couple, minimum term, notice period, bills, deposit, and the parking situation?\n\nThank you.` },
-          { id: 't3', title: 'Viewing Előtti Fixálás', content: `Thanks. Before viewing, we just want to make sure we are aligned on the basics:\nWe are looking for a short-term, low-admin arrangement for a couple, with clear simple terms, and available street parking nearby. We have our Right to Rent share codes ready.\n\nIf the room is clean, quiet, and the move-in cost is as discussed, we can make a decision quickly.` }
+          { id: 't1', title: 'Auto-Reachout (Agency-Friendly / Alap)', content: `Hi,\n\nI am a Company Director with 8 years of UK residency and Settled Status. My Right to Rent Share Code is available immediately upon request.\n\nI am looking for a room or self-contained space available from around the end of May, on a flexible or rolling basis. I am a solo professional, quiet, tidy, and I travel light.\n\nTo address the reference concern upfront: I can offer 3 months' rent in advance. I am happy to provide my Share Code, bank statements, and company registration details as proof of status.\n\nCould you please confirm:\n- Availability and minimum stay,\n- Whether bills are included,\n- Parking situation (I drive),\n- Total move-in cost (rent + deposit only — no admin fees)?\n\nI can arrange a viewing promptly, including a video call if needed. Thank you.` },
+          { id: 't2', title: 'Auto-Reachout (Autós / Parkolás fókusz)', content: `Hi,\n\nI am a solo professional looking for a room from the end of May on a rolling or periodic basis. I have 8 years of UK residency, Settled Status, and my Right to Rent Share Code is ready.\n\nI drive, so reliable street parking nearby is essential for me. I am respectful, clean, and have minimal belongings.\n\nI can offer 3 months' rent in advance — this removes the need for employer references or complex credit checks.\n\nCould you confirm the parking situation, whether bills are included, minimum term, and the total move-in cost (rent + deposit, no admin fees)?\n\nHappy to view promptly or via video call. Thank you.` },
+          { id: 't3', title: 'Viewing Előtti Fixálás (Solo)', content: `Hi,\n\nThank you — I am looking forward to the viewing.\n\nJust to make sure we are aligned before I come:\nI am looking for a short-term, straightforward arrangement with clear terms — rolling or periodic tenancy preferred, bills included, and easy parking nearby.\n\nI have my Right to Rent Share Code ready and can offer 3 months' rent upfront.\n\nPlease note: I am only able to proceed where the total move-in cost is rent plus a standard deposit (maximum one month's rent as holding deposit, capped at one week — as per the Tenant Fees Act 2019). No administration or referencing fees.\n\nIf the room matches what was described and the terms are clean, I can make a decision the same day. Thank you.` }
         ],
 
         initApp() {
@@ -1145,14 +1157,14 @@ Formátum:
 
           try {
             const heuristic = extractHeuristicAnalysis(inputTxt, this.weights);
-            const sys = "Te vagy a 'RoomFinder Buddy', egy okos, védelmező ingatlanpiaci asszisztens. Egy párt (Krisztián és Enikő) segítesz. Kritériumok: átmeneti, autós, olcsó, bills included, és PÁROKAT (couples) is fogadnia kell. Magyarul válaszolj, csak egyszerű HTML (<p>, <ul>, <li>, <strong>).";
+            const sys = "Te vagy a 'RoomFinder Buddy', egy okos, védelmező ingatlanpiaci asszisztens. Krisztiánt segítesz – solo applicant, Company Director, 8 éves UK rezidencia, Settled Status. Kritériumok: max £700 PCM (HMO: bills included kötelező), autós parkolás, agency-friendly, Upfront Payment (3 hó) a referencia kiváltására, Rolling/Periodic tenancy preferált. SZIGORÚAN TILOS: illegális Tenant Fee (admin/referencing/application fee), licit az áron felül. Magyarul válaszolj, csak egyszerű HTML (<p>, <ul>, <li>, <strong>).";
             const prmpt = `Elemezd a hirdetést:
 1. Biztonsági Ellenőrzés (Scam Check): Van benne utalás előre fizetésre megtekintés nélkül, WhatsApp linkre, vagy furcsa fizetési módra?
-2. Rejtett Kizáró Okok: Van benne 'No couples', 'Females only', 'Monday to Friday only' vagy hasonló kizárás?
-3. Értékelés: 1-10 pontszám a mi stratégiánkhoz, egy rövid indoklással.
-4. Kérdések: Három célzott kérdés a főbérlőnek.
+2. Jogi Megfelelés (Legal Check): Van benne illegális Tenant Fee (admin/referencing/application/credit check fee)? Van benne licitálásra utaló szöveg (best offer, sealed bids)? Van benne 'Females only' vagy 'Mon-Fri only' kizárás?
+3. Értékelés: 1-10 pontszám a solo applicant stratégiánkhoz (max £700 PCM, bills included, autós parkolás, upfront payment lehetséges), egy rövid indoklással.
+4. Kérdések: Három célzott kérdés a landlordnak/ügynöknek.
 
-Heurisztikus előscore: scam/kockázat ${heuristic.scamScore}/100, stratégiai fit ${heuristic.fitScore}/10, couples ok: ${heuristic.couplesOk ? 'igen' : 'nem vagy kérdéses'}.
+Heurisztikus előscore: scam/kockázat ${heuristic.scamScore}/100, stratégiai fit ${heuristic.fitScore}/10, jogi-és-kizáró tiszta: ${heuristic.couplesOk ? 'igen' : 'nem – problémás feltétel van'}.
 
 Hirdetés:
 "${inputTxt}"`;
@@ -1162,9 +1174,9 @@ Hirdetés:
               <div class="flex items-center justify-between gap-3 flex-wrap">
                 <span class="badge ${heuristic.scamScore <= 24 ? 'badge-green' : heuristic.scamScore <= 49 ? 'badge-amber' : 'badge-rose'}">Scam score: ${heuristic.scamScore}/100</span>
                 <span class="badge ${heuristic.fitScore >= 8 ? 'badge-green' : heuristic.fitScore >= 6 ? 'badge-amber' : 'badge-rose'}">Fit: ${heuristic.fitScore}/10</span>
-                <span class="badge ${heuristic.couplesOk ? 'badge-sky' : 'badge-rose'}">${heuristic.couplesOk ? 'Páros szempontból vállalható' : 'Páros szempontból kérdéses'}</span>
+                <span class="badge ${heuristic.couplesOk ? 'badge-sky' : 'badge-rose'}">${heuristic.couplesOk ? 'Solo-fit: Rendben' : 'Kizáró feltétel!'}</span>
               </div>
-              <div class="text-[10px] text-slate-500">Signals: scam=${heuristic.signals.foundScam}, exclusion=${heuristic.signals.foundExclusion}, parking=${heuristic.signals.foundParking}, bills=${heuristic.signals.foundBills}, mould=${heuristic.signals.mould ? 'igen' : 'nem'}</div>
+              <div class="text-[10px] text-slate-500">Signals: scam=${heuristic.signals.foundScam}, kizáró=${heuristic.signals.foundExclusion}, tenant-fee=${heuristic.signals.foundTenantFee}, bidding=${heuristic.signals.foundBidding}, parking=${heuristic.signals.foundParking}, bills=${heuristic.signals.foundBills}, penész=${heuristic.signals.mould ? 'igen' : 'nem'}</div>
               <div>${res}</div>
             `;
 
@@ -1305,13 +1317,13 @@ Hirdetés:
 
         buildReport(item) {
           return [
-            `ROOMFINDER BUDDY 3.0 REPORT`,
+            `ROOMFINDER BUDDY 3.1 REPORT`,
             `Cím: ${item.title}`,
             `Dátum: ${item.createdAt}`,
             `Pipeline: ${item.pipeline || 'maybe'}`,
             `Scam score: ${item.scamScore}/100`,
             `Stratégiai fit: ${item.fitScore}/10`,
-            `Páros kompatibilitás: ${item.couplesOk ? 'igen / valószínűleg oké' : 'kérdéses / valószínűleg nem'}`,
+            `Solo-fit (nincs kizáró/jogi probléma): ${item.couplesOk ? 'igen' : 'kizáró feltétel van'}`,
             `Shortlist: ${item.shortlisted ? 'igen' : 'nem'}`,
             `Landlord/agent: ${item.landlord || '-'}`,
             `Map link: ${item.mapLink || '-'}`,
@@ -1336,7 +1348,7 @@ Hirdetés:
 
         exportJson() {
           const payload = {
-            version: '3.0',
+            version: '3.1',
             exportedAt: new Date().toISOString(),
             weights: this.weights,
             checklist: this.viewingChecklist,
@@ -1386,20 +1398,20 @@ Hirdetés:
           const results = [];
           const expect = (name, cond) => results.push({ name, ok: !!cond });
 
-          const h1 = extractHeuristicAnalysis('Couples welcome, bills included, street parking, flexible short term.', { scam: 1, couples: 1, parking: 1, bills: 1 });
+          const h1 = extractHeuristicAnalysis('Bills included, street parking, flexible short term, rolling tenancy.', { scam: 1, couples: 1, parking: 1, bills: 1 });
           expect('Low-risk positive listing scores low scam', h1.scamScore < 30);
-          expect('Low-risk positive listing keeps couplesOk true', h1.couplesOk === true);
+          expect('Low-risk positive listing has no exclusions', h1.couplesOk === true);
 
-          const h2 = extractHeuristicAnalysis('No couples. Cash only. Deposit before viewing. WhatsApp me.', { scam: 1, couples: 1, parking: 1, bills: 1 });
+          const h2 = extractHeuristicAnalysis('Admin fee £200. Referencing fee required. Cash only. Deposit before viewing. WhatsApp me.', { scam: 1, couples: 1, parking: 1, bills: 1 });
           expect('Risky listing scores high scam', h2.scamScore >= 40);
-          expect('Risky listing flags couples exclusion', h2.couplesOk === false);
+          expect('Risky listing flags tenant fees and scam', h2.couplesOk === false);
 
           const sorted = [{ id: 1, pipeline: 'rejected' }, { id: 2, pipeline: 'approved' }, { id: 3, pipeline: 'maybe' }];
           const ordered = [...sorted].sort((a, b) => ({ approved: 0, maybe: 1, rejected: 2 }[a.pipeline] - { approved: 0, maybe: 1, rejected: 2 }[b.pipeline])).map(x => x.pipeline).join(',');
           expect('Pipeline ordering is approved -> maybe -> rejected', ordered === 'approved,maybe,rejected');
 
           const report = this.buildReport({ title: 'X', createdAt: 'now', pipeline: 'maybe', scamScore: 10, fitScore: 8, couplesOk: true, shortlisted: false, landlord: '', mapLink: '', followUpStatus: '', followUpDate: '', notes: '', rawText: 'demo' });
-          expect('Report builder tolerates empty optional fields', report.startsWith('ROOMFINDER BUDDY 3.0 REPORT'));
+          expect('Report builder tolerates empty optional fields', report.startsWith('ROOMFINDER BUDDY 3.1 REPORT'));
 
           const importLike = { listings: [{ id: 1, title: 'A' }], weights: { scam: 1.5 } };
           expect('Import-like payload shape is readable', Array.isArray(importLike.listings) && typeof importLike.weights.scam === 'number');
