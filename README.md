@@ -12,11 +12,12 @@ v3.1 update in progress.
 ## Main Features
 
 - AI-style listing analysis
-- Scam and red-flag checking
-- Couples suitability check
+- Scam and legal red-flag checking
+- Solo applicant suitability checks
+- Agency-friendly application workflow
 - Saved listings and shortlist workflow
-- Viewing checklist
-- Landlord message templates
+- Viewing and digital referencing checklist
+- Landlord / agent message templates
 - Data / area comparison panel
 - Decision-support protocol for difficult housing choices
 
