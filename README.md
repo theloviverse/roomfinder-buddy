@@ -1,20 +1,31 @@
-# Loviverse Starter Template
+# RoomFinder Buddy
 
-## Description
-This is a clean starter template for new coding projects.
+RoomFinder Buddy is a personal housing search assistant webapp designed to support structured, safer and more objective room hunting.
 
-## Purpose
-Used to create structured, consistent projects from scratch.
+The app helps evaluate room listings, track saved options, manage viewing checklists, generate landlord replies, and reduce the risk of rushed or emotionally biased decisions.
 
-## Structure
-- README.md → project description
-- PROJECT_PLAN.md → idea and roadmap
-- SETUP_GUIDE.md → how to start
-- src/ → source code
-- docs/ → notes and documentation
+## Current Version
 
-## Status
-Template repository
+v3.0 base restored.  
+v3.1 update in progress.
 
-## Usage
-Use this template to start new projects in a clean and structured way.
+## Main Features
+
+- AI-style listing analysis
+- Scam and red-flag checking
+- Couples suitability check
+- Saved listings and shortlist workflow
+- Viewing checklist
+- Landlord message templates
+- Data / area comparison panel
+- Decision-support protocol for difficult housing choices
+
+## Project Structure
+
+```text
+src/              Main webapp source files
+docs/             Notes, roadmap, changelog and version documentation
+README.md         Project overview
+PROJECT_PLAN.md   Development roadmap
+SETUP_GUIDE.md    How to run or edit the project
+AGENTS.md         AI-agent collaboration instructions
